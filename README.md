@@ -28,5 +28,6 @@
 
 然后运行即可得到示例结果
 - 例如
-![image](https://github.com/user-attachments/assets/6e264dc3-05d2-4014-a62d-65c7c564fb52)
+![image](https://github.com/user-attachments/assets/ce8d803f-c0b5-438e-ab20-c2812c6023bd)
+
 
