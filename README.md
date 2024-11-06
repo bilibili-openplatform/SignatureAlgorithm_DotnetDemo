@@ -17,6 +17,7 @@
 
 - 例如
 ```C#
+        //本示例内容为虚构内容，请根据从开放平台获取的到的实际内容进行填写
         const string AccessKey = "34c0f583f0414123";
         const string AccessKeySecret = "abc7736bb78947d5a4a90690c861c456"; 
         const string AccessToken = "0594436e79c607569b8d387e5f29311";
