@@ -104,7 +104,7 @@ x-bili-timestamp:1624594467
 
 ##### 2.生成签名
 
-对步骤2中得到的字符串，使用app_secret进行HMAC-SHA256算法进行签名。
+对步骤1中得到的字符串，使用app_secret进行HMAC-SHA256算法进行签名。
 
 将最后签名得到的字符串添加到Header的`Authorization`字段中
 
