@@ -5,6 +5,14 @@
 ## 使用范围
 本签名示例的覆盖范围为[哔哩哔哩开放平台文档中心](https://open.bilibili.com/doc)中相关接口的签名实现，不包含[直播创作者服务中心](https://open-live.bilibili.com/document/bdb1a8e5-a675-5bfe-41a9-7a7163f75dbf#h1-u5E73u53F0u4ECBu7ECD)中的相关接口，请注意。
 
+## 系统要求
+
+Visual Studio 2022 + .NET6
+
+## 快速开始
+
+打开项目OpenBLiveSample并查阅Program.cs文件，文件中包含用例sample。
+
 ## 使用方法
 在`Program.cs`头部需要填写的内容中填写注释说明中对应的内容。
 ```C#
