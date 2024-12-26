@@ -11,7 +11,7 @@ Visual Studio 2022 + .NET6
 
 ## 快速开始
 
-打开项目OpenBLiveSample并查阅Program.cs文件，文件中包含用例sample。
+打开项目并查阅Program.cs文件，文件中包含用例sample。
 
 ## 使用方法
 在`Program.cs`头部需要填写的内容中填写注释说明中对应的内容。
