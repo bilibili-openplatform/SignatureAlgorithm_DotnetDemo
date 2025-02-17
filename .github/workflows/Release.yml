@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build SignatureVerificationTool
-        run: cd SignatureVerificationTool && dotnet publish --runtime ${{ matrix.runtime }} --configuration Release --self-contained true --output build_output
+        run: cd SignatureVerificationTool && dotnet publish --runtime ${{ matrix.runtime }} --configuration Release --self-contained true --output build_output -p:PublishSingleFile=true -p:PublishTrimmed=true
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -48,3 +48,23 @@ jobs:
           name: DDTV-Server-${{ matrix.os }}-${{ matrix.runtime }}
           path: SignatureVerificationTool/build_output
 
+  Release:
+    needs: [SignatureVerificationTool]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+      - run: |
+          cd assets
+          rm -rf *linux-musl*
+          rm -rf digests*
+          for f in *; do
+            (cd $f && zip -r ../$f-${{ github.ref_name }}.zip .)
+          done
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*.zip
+          body: | 
+            本Release内容为签名验证工具，根据自己的环境下载对应版本即可
