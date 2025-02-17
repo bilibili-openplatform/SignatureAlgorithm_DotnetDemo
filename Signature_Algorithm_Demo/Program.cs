@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Signature_Algorithm_Demo
@@ -88,6 +89,31 @@ namespace Signature_Algorithm_Demo
             public string Message { get; set; }
             public string RequestId { get; set; }
             public string Data { get; set; }
+        }
+
+        /// <summary>
+        /// 测试签名
+        /// </summary>
+        /// <param name="Client_ID">用于计算签名的应用ClientID</param>
+        /// <param name="App_Secret">用于计算签名的应用Secret</param>
+        /// <param name="Nonce">用于计算签名的全网唯一字符串</param>
+        /// <param name="TimeStamp">用于计算签名的秒级时间戳</param>
+        /// <param name="ReqJson">用于计算签名的应用body内容或者已计算好的md5值</param>
+        /// <returns></returns>
+        public static string SignatureTest(string Client_ID,string App_Secret,string Nonce,string TimeStamp,string ReqJson)
+        {
+            var header = new CommonHeader
+            {
+                Timestamp = string.IsNullOrEmpty(TimeStamp)?DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString():TimeStamp,
+                SignatureMethod = HmacSha256,
+                Nonce = string.IsNullOrEmpty(Nonce)?Guid.NewGuid().ToString():Nonce,
+                AccessKeyId = Client_ID,
+                SignatureVersion = BiliVersion,
+                ContentMD5 = Regex.IsMatch(ReqJson, @"^[a-fA-F0-9]{32}$") ? ReqJson : Md5(ReqJson)
+            };
+
+            header.Authorization = CreateSignature(header, App_Secret);
+            return header.Authorization;
         }
 
         // 主函数
@@ -219,6 +245,8 @@ namespace Signature_Algorithm_Demo
                 }
             }
         }
+
+
 
         // 生成Authorization加密串
         public static string CreateSignature(CommonHeader header, string accessKeySecret)
