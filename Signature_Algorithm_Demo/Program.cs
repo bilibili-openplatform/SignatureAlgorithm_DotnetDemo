@@ -100,13 +100,13 @@ namespace Signature_Algorithm_Demo
         /// <param name="TimeStamp">用于计算签名的秒级时间戳</param>
         /// <param name="ReqJson">用于计算签名的应用body内容或者已计算好的md5值</param>
         /// <returns></returns>
-        public static string SignatureTest(string Client_ID,string App_Secret,string Nonce,string TimeStamp,string ReqJson)
+        public static string SignatureTest(string Client_ID, string App_Secret, string Nonce, string TimeStamp, string ReqJson)
         {
             var header = new CommonHeader
             {
-                Timestamp = string.IsNullOrEmpty(TimeStamp)?DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString():TimeStamp,
+                Timestamp = string.IsNullOrEmpty(TimeStamp) ? DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() : TimeStamp,
                 SignatureMethod = HmacSha256,
-                Nonce = string.IsNullOrEmpty(Nonce)?Guid.NewGuid().ToString():Nonce,
+                Nonce = string.IsNullOrEmpty(Nonce) ? Guid.NewGuid().ToString() : Nonce,
                 AccessKeyId = Client_ID,
                 SignatureVersion = BiliVersion,
                 ContentMD5 = Regex.IsMatch(ReqJson, @"^[a-fA-F0-9]{32}$") ? ReqJson : Md5(ReqJson)
@@ -119,6 +119,7 @@ namespace Signature_Algorithm_Demo
         // 主函数
         public static async Task Main(string[] args)
         {
+           
             var response = await ApiRequest(reqJson, OpenPlatformHtppInterface, RequestType);
             if (response == null)
             {
@@ -246,13 +247,31 @@ namespace Signature_Algorithm_Demo
             }
         }
 
-
+        public static void VerifySignature()
+        {
+            Console.WriteLine("请输入计算签名的Client_ID：");
+            string Client_ID = Console.ReadLine();
+            Console.WriteLine("请输入计算签名的App_Secret：");
+            string App_Secret = Console.ReadLine();
+            Console.WriteLine("请输入计算签名的Nonce：");
+            string Nonce = Console.ReadLine();
+            Console.WriteLine("请输入用于计算签名的body ReqJson或者已计算好的md5内容：");
+            string ReqJson = Console.ReadLine();
+            Console.WriteLine("请输入计算签名的TimeStamp：");
+            string TimeStamp = Console.ReadLine();
+            Console.WriteLine("计算签名结果：\n" + SignatureTest(Client_ID, App_Secret, Nonce, TimeStamp, ReqJson));
+            Console.WriteLine("\n计算完成，随时可关闭，需要再次计算请重新打开工具");
+            while(true)
+            {
+                Console.ReadKey();
+            }
+        }
 
         // 生成Authorization加密串
         public static string CreateSignature(CommonHeader header, string accessKeySecret)
         {
             var sStr = header.ToSortedString();
-            Console.WriteLine($"\n用于计算签名的字符串：\n{sStr}\n");
+            Console.WriteLine($"\n用于计算签名的字符串：\n------------------下面用于签名的字符包括换行符------------------\n{sStr}\n------------------上面用于签名的字符包括换行符------------------");
             return HmacSHA256(accessKeySecret, sStr);
         }
 
@@ -276,5 +295,4 @@ namespace Signature_Algorithm_Demo
             }
         }
     }
-
 }
