@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "test*"
+      - "Release*"
   pull_request:
     paths:
       - '!**/README.md'
@@ -68,3 +68,4 @@ jobs:
           files: assets/*.zip
           body: | 
             本Release内容为签名验证工具，根据自己的环境下载对应版本即可
+          token: ${{ secrets.GH_PAT }}  # 使用仓库 Secrets 中的 PAT
